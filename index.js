@@ -34,7 +34,7 @@ async function run() {
         const toolCollection = client.db('tool_plaza').collection('tools');
         const toolOrder = client.db('tool_plaza').collection('orders');
         const userCollection = client.db('tool_plaza').collection('users');
-        const userReviewCollection = client.db('tool_plaza').collection('reviews');
+        const userReviewCollection = client.db('tool_plaza').collection('userReviewCollection');
 
         const verifyAdmin = async (req, res, next) => {
             const requester = req.decoded.email;
