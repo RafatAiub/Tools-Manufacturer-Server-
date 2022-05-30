@@ -65,6 +65,12 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         });
+        app.get('/orders/:email', async (req, res) => {
+            const email = req.params.email;
+            const order = await userCollection.findOne({ email: email });
+            res.send(order);
+        });
+
         app.post('/orders', async (req, res) => {
             const order = req.body;
             const result = await toolOrder.insertOne(order);
@@ -93,7 +99,9 @@ async function run() {
         });
 
         app.get('/user', async (req, res) => {
-            const users = await userCollection.find().toArray();
+            const query = {};
+            const cursor = userCollection.find(query).project();
+            const users = await cursor.toArray();
             res.send(users);
         });
 
