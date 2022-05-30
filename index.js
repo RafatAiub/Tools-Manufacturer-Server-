@@ -77,19 +77,6 @@ async function run() {
             res.send(result);
         });
 
-        app.put('/user/:email', async (req, res) => {
-            const email = req.params.email;
-            const user = req.body;
-            const filter = { email: email };
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: user,
-            };
-            const result = await userCollection.updateOne(filter, updateDoc, options);
-            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
-            res.send({ result, token });
-        });
-
         app.get('/tools/:_id', async (req, res) => {
             const id = req.params._id;
             const query = { _id: ObjectId(id) };
@@ -98,7 +85,7 @@ async function run() {
             res.send(cursor);
         });
 
-        app.get('/user', async (req, res) => {
+        app.get('/user', verifyJWT, async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query).project();
             const users = await cursor.toArray();
@@ -108,11 +95,11 @@ async function run() {
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
             const user = await userCollection.findOne({ email: email });
-            // const isAdmin = user.role === 'admin';
-            // res.send({ admin: isAdmin })
+            const isAdmin = user.role === 'admin';
+            res.send({ admin: isAdmin })
         })
 
-        app.put('/user/admin/:email', async (req, res) => {
+        app.put('/user/admin/:email', verifyJWT, verifyAdmin, async (req, res) => {
             const email = req.params.email;
             const filter = { email: email };
             const updateDoc = {
