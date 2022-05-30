@@ -34,6 +34,7 @@ async function run() {
         const toolCollection = client.db('tool_plaza').collection('tools');
         const toolOrder = client.db('tool_plaza').collection('orders');
         const userCollection = client.db('tool_plaza').collection('users');
+        const userReviewCollection = client.db('tool_plaza').collection('reviews');
 
         const verifyAdmin = async (req, res, next) => {
             const requester = req.decoded.email;
@@ -57,6 +58,18 @@ async function run() {
             const tool = req.body;
             const result = await toolCollection.insertOne(tool);
             res.send(result);
+        });
+
+        app.get('/reviews', async (req, res) => {
+            const query = {};
+            const cursor = userReviewCollection.find(query).project();
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const cursor = await userReviewCollection.insertOne(review);
+            res.send(cursor);
         });
 
         app.get('/orders', async (req, res) => {
