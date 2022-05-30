@@ -67,7 +67,7 @@ async function run() {
         });
         app.get('/orders/:email', async (req, res) => {
             const email = req.params.email;
-            const order = await toolOrder.findOne({ CustomerEmail: email });
+            const order = await toolOrder.findOne({ CustomerEmail: email }).project();
             res.send(order);
         });
 
