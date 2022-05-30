@@ -32,6 +32,7 @@ async function run() {
     try {
         await client.connect();
         const toolCollection = client.db('tool_plaza').collection('tools');
+        const toolOrder = client.db('tool_plaza').collection('orders');
         const userCollection = client.db('tool_plaza').collection('users');
 
         const verifyAdmin = async (req, res, next) => {
@@ -56,6 +57,31 @@ async function run() {
             const tool = req.body;
             const result = await toolCollection.insertOne(tool);
             res.send(result);
+        });
+
+        app.get('/orders', async (req, res) => {
+            const query = {};
+            const cursor = toolOrder.find(query).project();
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
+        app.post('/orders', async (req, res) => {
+            const order = req.body;
+            const result = await toolOrder.insertOne(order);
+            res.send(result);
+        });
+
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+            res.send({ result, token });
         });
 
         app.get('/tools/:_id', async (req, res) => {
