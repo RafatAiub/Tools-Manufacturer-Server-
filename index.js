@@ -147,6 +147,6 @@ app.get('/', (req, res) => {
     res.send('Hello From manufacturer.com!')
 })
 
-app.listen(port, () => {
+app.listen(port, (err) => {
     console.log(`Manufacture App listening on port ${port}`)
 })
