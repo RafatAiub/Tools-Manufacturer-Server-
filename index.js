@@ -80,7 +80,7 @@ async function run() {
         });
         app.get('/orders/:email', async (req, res) => {
             const email = req.params.email;
-            const order = await toolOrder.findOne({ CustomerEmail: email }).project();
+            const order = await toolOrder.find({ CustomerEmail: email }).project().toArray();
             res.send(order);
         });
 
