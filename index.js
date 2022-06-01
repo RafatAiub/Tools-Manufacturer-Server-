@@ -6,7 +6,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 const app = express();
-const port = process.env.PORT || 4200;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -98,7 +98,7 @@ async function run() {
             res.send(cursor);
         });
 
-        app.get('/user', async (req, res) => {
+        app.get('/user', verifyJWT, async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query).project();
             const users = await cursor.toArray();
