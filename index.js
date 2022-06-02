@@ -83,6 +83,19 @@ async function run() {
             const order = await toolOrder.find({ CustomerEmail: email }).project().toArray();
             res.send(order);
         });
+        app.get('orders/email/:Product', async (req, res) => {
+            const Product = req.params.Product;
+            const filter = { Product: Product };
+            const result = await toolOrder.findOne(filter).project().toArray();
+            res.send(result);
+        });
+
+        app.delete('orders/email/:Product', async (req, res) => {
+            const Product = req.params.Product;
+            const filter = { Product: Product };
+            const result = await toolOrder.deleteOne(filter);
+            res.send(result);
+        });
 
         app.post('/orders', async (req, res) => {
             const order = req.body;
