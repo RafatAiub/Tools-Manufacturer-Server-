@@ -105,13 +105,13 @@ async function run() {
             const order = await toolOrder.find({ CustomerEmail: email }).project().toArray();
             res.send(order);
         });
-        app.get('orders/:email/:Product', async (req, res) => {
-            const Product = req.params.Product;
-            const email = req.params.email;
-            const filter = { Product: Product, CustomerEmail: email };
-            const result = await toolOrder.findOne(filter).project().toArray();
-            res.send(result);
-        });
+        // app.get('orders/:email/:Product', async (req, res) => {
+        //     const Product = req.params.Product;
+        //     const email = req.params.email;
+        //     const filter = { Product: Product, CustomerEmail: email };
+        //     const result = await toolOrder.findOne(filter).project().toArray();
+        //     res.send(result);
+        // });
 
         app.delete('orders/:email/:Product', async (req, res) => {
             const Product = req.params.Product;
