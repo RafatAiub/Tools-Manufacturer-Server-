@@ -113,13 +113,13 @@ async function run() {
         //     res.send(result);
         // });
 
-        app.delete('orders/:email/:Product', async (req, res) => {
-            const Product = req.params.Product;
-            const email = req.params.email;
-            const filter = { Product: Product, CustomerEmail: email };
-            const result = await toolOrder.deleteOne(filter);
-            res.send(result);
-        });
+        // app.delete('orders/:email/:Product', async (req, res) => {
+        //     const Product = req.params.Product;
+        //     const email = req.params.email;
+        //     const filter = { Product: Product, CustomerEmail: email };
+        //     const result = await toolOrder.deleteOne(filter);
+        //     res.send(result);
+        // });
 
         app.post('/create-payment-intent', async (req, res) => {
             const order = req.body;
